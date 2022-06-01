@@ -1,0 +1,10 @@
+﻿@using MvcMovie.Models;
+@using Microsoft.AspNetCore.Html;
+
+@{
+    Layout = "_Layout";
+     Func<dynamic, IHtmlContent> StampaMainTitolo(string sTitolo) =>
+        @<h1>@sTitolo
+        </h1>;
+
+}

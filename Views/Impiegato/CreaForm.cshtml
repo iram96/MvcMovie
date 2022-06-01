@@ -1,0 +1,68 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+      ViewData["Title"] = "Crea Tessera";
+    ViewBag.TitoloPagina = "Creazione Tessera Impiegato";
+
+
+}
+
+@model MvcMovie.Models.Impiegato;
+
+  @using (Html.BeginForm("CreaScheda", "Impiegato", FormMethod.Post))
+    {
+        <table cellpadding="0" cellspacing="0" class="center">
+            <tr>
+                <th colspan="2" align="center">Person Details</th>
+            </tr>
+            <tr>
+                <td>PersonId: </td>
+                <td>
+                    @Html.TextBoxFor(m => m.Id)
+                </td>
+            </tr>
+            <tr>
+                <td>Name: </td>
+                <td>
+                    @Html.TextBoxFor(m => m.FullName)
+                </td>
+            </tr>
+            <tr>
+                <td>Gender: </td>
+                <td>
+                    @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
+                   { new SelectListItem{Text="Male", Value="M"},
+                     new SelectListItem{Text="Female", Value="F"}}, "Please select")
+                </td>
+            </tr>
+            <tr>
+                <td>City: </td>
+                <td>
+                    @Html.TextBoxFor(m => m.City)
+                </td>
+            </tr>
+            
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Submit"/></td>
+            </tr>
+        </table>
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

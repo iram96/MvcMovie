@@ -1,0 +1,21 @@
+﻿@using Microsoft.AspNetCore.Html;
+
+@{
+    ViewData["Title"] = "Home Page";
+    ViewBag.TitoloPagina = "Buongiorno a tutti";
+
+    Func<dynamic, IHtmlContent> CreaLink(string Testo, string Controller, string Action) =>
+    @<h2> @Html.ActionLink(Testo, Action, Controller)</h2>
+    ;
+}
+
+
+<h2><a href="/Impiegato/CreaForm">Crea tessera impiegato</a></h2>
+
+<h2> <a href="@Url.Action("ShowMovie", "Movie")">Mostra Lista film </a></h2>
+
+<h2> @Html.ActionLink("Crea Tessera impiegato con foto", "CreaForm", "Impiegato")</h2>
+
+<h2> @Html.ActionLink("i tuoi dati", "ProvaParametri", "Movie", new Dictionary<string, string> {{ "Nome" , "Mario"}, {"Cognome" , "Rossi"}})</h2>
+
+@CreaLink("ciao ciao", "Movie" ,"ShowMovie")(null);
