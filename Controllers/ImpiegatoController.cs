@@ -23,7 +23,7 @@ namespace MvcMovie.Controllers
 
         public IActionResult CreaFormConFoto()
         {
-            Impiegato TempImpiegato = new Impiegato()
+            ImpiegatoConFile TempImpiegato = new ImpiegatoConFile()
             {
                 Id = 1,
                 FullName = "",
@@ -36,6 +36,9 @@ namespace MvcMovie.Controllers
             };
             return View(TempImpiegato);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
 
         public IActionResult CreaScheda(Impiegato DatiImpiegato)
         {
@@ -51,19 +54,47 @@ namespace MvcMovie.Controllers
                 City = DatiImpiegato.City,
                 EmailAddress = NomeImpiegato + "." + CognomeImpiegato + "@email.com",
                 PersonalWebSite = "www." + NomeImpiegato + "-" + CognomeImpiegato + ".com",
-                Photo = "",
+                Photo = "/img/io.jpg",
                 AlternateText = "Foto non disponibile"
             };
             return View(VeroImpiegato);
         }
 
-        public IActionResult CreaSchedaConFoto(Impiegato DatiImpiegato)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public IActionResult CreaSchedaConFoto(ImpiegatoConFile DatiImpiegato)
         {
+            if (!ModelState.IsValid)
+            {
+                return View("CreaFormConFoto", DatiImpiegato);
+            }
+
+            //Devo prendere il file ricevuto dal client 
+            //DatiImpiegato.File.CopyTo()
+            //lo devo salvare sul file system
+            //creo la scheda Nuova con il file salvato su File system (wwwroot)
+
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
+
+            //creare folder se non c'è
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            //prendi l'estensione del file
+            FileInfo fileInfo = new FileInfo(DatiImpiegato.File.FileName);
+            string fileName = DatiImpiegato.FullName + fileInfo.Extension;
+            string fileNameWithPath = Path.Combine(path, fileName);
+
+            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+            {
+                DatiImpiegato.File.CopyTo(stream);
+            }
 
             string NomeImpiegato = DatiImpiegato.FullName.Split(" ")[0];
             string CognomeImpiegato = DatiImpiegato.FullName.Split(" ")[1];
 
-            Impiegato VeroImpiegato = new Impiegato()
+            ImpiegatoConFile VeroImpiegato = new ImpiegatoConFile()
             {
                 Id = DatiImpiegato.Id,
                 FullName = DatiImpiegato.FullName,
@@ -71,7 +102,7 @@ namespace MvcMovie.Controllers
                 City = DatiImpiegato.City,
                 EmailAddress = NomeImpiegato + "." + CognomeImpiegato + "@email.com",
                 PersonalWebSite = "www." + NomeImpiegato + "-" + CognomeImpiegato + ".com",
-                Photo = "",
+                Photo = "/Files/" + fileName,
                 AlternateText = "Foto non disponibile"
             };
             return View(VeroImpiegato);
