@@ -1,3 +1,7 @@
+using MvcMovie.EserciziLinq;
+EserciziLinq.Esercizio2_linq0();
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -25,3 +29,5 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+

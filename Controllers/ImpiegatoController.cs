@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MvcMovie.Models;
+using System.Net;
 
 namespace MvcMovie.Controllers
 {
     public class ImpiegatoController : Controller
     {
+
+
         public IActionResult CreaForm()
         {
             Impiegato TempImpiegato = new Impiegato()
@@ -106,6 +109,57 @@ namespace MvcMovie.Controllers
                 AlternateText = "Foto non disponibile"
             };
             return View(VeroImpiegato);
+        }
+
+        //  !!! PUT METHOD !!!
+
+
+
+        public IActionResult CreaFormPut()
+        {
+
+            var request = (HttpWebRequest)WebRequest.Create("https://localhost:7088/Impiegato/InserisciDirigente");
+            var postData = "NomeDir=" + Uri.EscapeDataString("Mario");
+            postData += "&CognomeDir=" + Uri.EscapeDataString("Rossi");
+            var data = System.Text.Encoding.ASCII.GetBytes(postData);
+
+            request.Method = "PUT";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = data.Length;
+
+            //Invio dei dati al server
+            using (var stream = request.GetRequestStream())
+            {
+                stream.Write(data, 0, data.Length);
+            }
+
+            //Prendiamo la risposta
+            var response = (HttpWebResponse)request.GetResponse();
+            var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+            //Processiamo la risposta del server
+            //e creiamo la view conseguentemente.
+            //if(responseString == "Dirigente Inserito correttamente")
+            EsitoOperazionePut Esito = new EsitoOperazionePut();
+            Esito.sEsito = responseString;
+
+
+            return View(Esito);
+        }
+
+        [HttpPut]
+        public string InserisciDirigente()
+        {
+            string sAppo = Request.Method;
+            if (sAppo == "PUT")
+            {
+                return "Dirigente Inserito Correttamente";
+
+            }
+            else
+            {
+                return "Errore Inserimento Dirigente";
+            }
         }
     }
 }

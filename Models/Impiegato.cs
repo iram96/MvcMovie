@@ -53,5 +53,10 @@ namespace MvcMovie.Models
 
     }
 
+    public class EsitoOperazionePut
+    {
+        public string sEsito { get; set; }
+    }
+
 
 }
