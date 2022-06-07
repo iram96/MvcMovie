@@ -1,5 +1,7 @@
 using MvcMovie.EserciziLinq;
-EserciziLinq.Esercizio2_linq0();
+//EserciziLinq.Esercizio2_linq0();
+//EserciziLinq.Esercizio3();
+EserciziLinq.Esercizio4();
 
 
 var builder = WebApplication.CreateBuilder(args);
